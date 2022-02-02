@@ -7,7 +7,7 @@
 library(tidyverse)
 library(cowplot)
 library(here)
-
+library(scales)
 #set up directory for data
 dir.data<-here("Data")
 
@@ -26,7 +26,7 @@ df <- df %>%
 
 # Data cleaning/setting up ------------------------------------------------
 #Set up time to plottable format
-Date<-as.POSIXct(df$fixdate)
+Date<-as.POSIXct(df$fixdate, tz = "US/Pacific")
 
 df <-df %>% 
   mutate(Date)   
@@ -60,11 +60,11 @@ sixth<-df %>%
 # First night fence 2021 -- fig 2 -----------------------------------------
 
 #set up times for shading - for geom rect
-down1<-as.POSIXct("2016-04-20 20:30:00 EDT")
-up1<-as.POSIXct("2016-04-21 05:56:00 EDT")
+down1<-as.POSIXct("2016-04-20 20:30:00 US/Pacific")
+up1<-as.POSIXct("2016-04-21 05:56:00 US/Pacific")
 
 #set x axes label to specify location of alphabet labels
-lab_x<-as.POSIXct("2016-04-21 12:00:00 EDT")
+lab_x<-as.POSIXct("2016-04-21 12:00:00 US/Pacific")
 
 (first1<-first %>% 
   #main plotting control
@@ -78,8 +78,8 @@ lab_x<-as.POSIXct("2016-04-21 12:00:00 EDT")
   
     #controlling x and y scale axes so we can have 2 y axes 
     scale_color_manual(name = "",
-                     values = c("Smolt Density" = '#E69F00', 
-                                "Total reactions per meter" = '#0072B2'))+
+                     values = c("Smolt Density" = 'orange', 
+                                "Total reactions per meter" = 'blue'))+
     scale_y_continuous(name = "", 
                      sec.axis = sec_axis(~.*140000, name = " "))+
   scale_linetype_manual(name = "",
@@ -94,22 +94,24 @@ lab_x<-as.POSIXct("2016-04-21 12:00:00 EDT")
   labs(title = 'UF2122', x = '',y="")+
    
      #fine-scale tinkering of theme
-    theme_classic()+
+    theme_bw()+
   theme(legend.position = 'none', axis.text.x = element_text(angle = 90, vjust = 0.5), 
-        axis.text = element_text(size = 14, color = 'black'),
+        axis.text = element_text(size = 16, color = 'black'),
         title = element_text(size = 17, face = 'bold'), 
-        axis.title.y = element_text(hjust = -4), plot.margin = unit(c(0.07,0,0,0),'cm'),
-        plot.title = element_text(hjust = 0.5)))
+        axis.title.y = element_text(hjust = -4), 
+        plot.margin = unit(c(0.25,0,-0.33,0),'cm'),
+        plot.title = element_text(hjust = 0.5),
+        panel.border = element_rect(colour = "black", fill=NA, size=1)))
 
 
 
 # Downstream 2122 -- Figure 2 ---------------------------------------------
 #set up times for shading
-down2<-as.POSIXct("2016-04-21 20:30:00 EDT")
-downc2<-as.POSIXct("2016-04-22 05:56:00 EDT")
+down2<-as.POSIXct("2016-04-21 20:30:00 US/Pacific")
+downc2<-as.POSIXct("2016-04-22 05:56:00 US/Pacific")
 
 #set x axes label to specify location of alphabet labels
-lab_x<-as.POSIXct("2016-04-22 12:00:00 EDT")
+lab_x<-as.POSIXct("2016-04-22 12:00:00 US/Pacific")
 
 
 (second1<-second %>% 
@@ -126,8 +128,8 @@ lab_x<-as.POSIXct("2016-04-22 12:00:00 EDT")
 
   #setting up scale for x and y axes so we can plot 2 y axes and dates as x axes
     scale_color_manual(name = "",
-                     values = c("Smolt Density" = '#E69F00', 
-                                "Total reactions per meter" = '#0072B2'))+
+                     values = c("Smolt Density" = 'orange', 
+                                "Total reactions per meter" = 'blue'))+
   scale_y_continuous(name = "", 
                      sec.axis = sec_axis(~.*500000, name = ""))+
   scale_linetype_manual(name = "",
@@ -142,19 +144,21 @@ lab_x<-as.POSIXct("2016-04-22 12:00:00 EDT")
            y = Inf, label  = 'B', vjust = 1.5, size = 8, fontface = 'bold',hjust = 0.5)+
   
   #tinkering with the theme
-  theme_classic()+
+  theme_bw()+
   theme(legend.position = 'none', axis.text.x = element_text(angle = 90, vjust = 0.5),  
-        axis.text = element_text(size = 14, color = 'black'),
-        title = element_text(size = 17, face = 'bold'), plot.margin = unit(c(0.07,0,0,0),'cm'),
-        plot.title = element_text(hjust = 0.5)))
+        axis.text = element_text(size = 17, color = 'black'),
+        title = element_text(size = 18, face = 'bold'), 
+        plot.margin = unit(c(0.25,0,-0.33,0),'cm'),
+        plot.title = element_text(hjust = 0.5),
+        panel.border = element_rect(colour = "black", fill=NA, size=1)))
 
 
 # Downstream 2324 - Fig 2 -------------------------------------------------
-downc3<-as.POSIXct("2016-04-23 20:30:00 EDT")
-upc3<-as.POSIXct("2016-04-24 05:56:00 EDT")
+downc3<-as.POSIXct("2016-04-23 20:30:00 US/Pacific")
+upc3<-as.POSIXct("2016-04-24 05:56:00 US/Pacific")
 
 #set x axes label to specify location of alphabet labels
-lab_x<-as.POSIXct("2016-04-24 12:00:00 EDT")
+lab_x<-as.POSIXct("2016-04-24 10:15:00 US/Pacific")
 
 
 (third1<-third %>% 
@@ -171,8 +175,8 @@ lab_x<-as.POSIXct("2016-04-24 12:00:00 EDT")
     
     #for allowing plots to have appropriate x and y scales w/ 2 y axes left and right
   scale_color_manual(name = "",
-                     values = c("Smolt Density" = '#E69F00', 
-                                "Total reactions per meter" = '#0072B2'))+
+                     values = c("Smolt Density" = 'orange', 
+                                "Total reactions per meter" = 'blue'))+
   scale_y_continuous(name ="",
                      sec.axis = sec_axis(~.*140000, name = ""))+
   scale_linetype_manual(name = bquote('Total reactions/'~m^2~''),
@@ -186,23 +190,24 @@ lab_x<-as.POSIXct("2016-04-24 12:00:00 EDT")
            y = Inf, label  = 'C', vjust = 1.5, size = 8, fontface = 'bold',hjust = 1)+
     
     #fine-scale tinkering of the theme
-    theme_classic()+
+    theme_bw()+
   theme(legend.position = 'none',
-        plot.margin = unit(c(0.07,0,0,0), 'cm'),
-        axis.text = element_text(size = 14, color = 'black'),
+        plot.margin = unit(c(0.25,0,-0.33,0),'cm'),
+        axis.text = element_text(size = 17, color = 'black'),
         axis.text.x = element_text(angle = 90, vjust = 0.5),
-        axis.title.y.right = element_text(size = 17, face = 'plain',hjust = 2.5),
-        title = element_text(size = 17, face = 'bold' ),
-        plot.title = element_text(hjust = 0.5)))
+        axis.title.y.right = element_text(size = 18, face = 'plain',hjust = -0.5, vjust = ),
+        title = element_text(size = 18, face = 'bold' ),
+        plot.title = element_text(hjust = 0.5),
+        panel.border = element_rect(colour = "black", fill=NA, size=1)))
 
 
 # Narrows 2526 -- Fig 2 --------------------------------------------------
 #setting up time objects for shading
-downd4<-as.POSIXct("2016-04-25 20:30:00 EDT")
-upd4<-as.POSIXct("2016-04-26 05:56:00 EDT")
+downd4<-as.POSIXct("2016-04-25 20:30:00 US/Pacific")
+upd4<-as.POSIXct("2016-04-26 05:56:00 US/Pacific")
 
 #set x axes label to specify location of alphabet labels
-lab_x<-as.POSIXct("2016-04-26 15:00:00 EDT")
+lab_x<-as.POSIXct("2016-04-26 15:00:00 US/Pacific")
 
 
 (fourth1<-fourth %>% 
@@ -218,39 +223,42 @@ lab_x<-as.POSIXct("2016-04-26 15:00:00 EDT")
  
     #setting up relevant scales for x and y axes - so we can have 2 y axes
      scale_color_manual(name = "",
-                     values = c("Smolt Density" = '#E69F00', 
-                                "Total reactions per meter" = '#0072B2'))+
-  scale_y_continuous(name = bquote('Bull trout reactions /'~m^2~''),
+                     values = c("Smolt Density" = 'orange', 
+                                "Total reactions per meter" = 'blue'))+
+  scale_y_continuous(name = bquote('Bull trout reactions /'~m^2~'(per 30-minutes)'),
                      sec.axis = sec_axis(~.*140000, name = " "))+
   scale_linetype_manual(name = "",values = c("Smolt Density" = 1,
                                              "Total reactions per meter" = 2))+
     
     #for annotations and labels, and shading
-    labs(title = 'N2526', x = '', y = bquote('Bull trout reactions /'~m^2~''))+
+    labs(title = 'N2526', x = '', y = bquote('Total reactions/'~m^2~'(per 30-minutes)'))+
     annotate("rect", xmin = downd4, xmax = upd4,
              ymin= -Inf,  ymax = Inf, alpha = 0.3)+
     annotate("text", x = lab_x, 
              y = Inf, label  = 'D', vjust = 1.5, size = 8, fontface = 'bold',hjust = 0.3)+
     
   #for fine scale tinkering of the themes
-  theme_classic()+
+  theme_bw()+
   theme(legend.position = 'none',
         axis.text.x = element_text(angle = 90, vjust = 0.5),
-        axis.text = element_text(size = 14, color = 'black'), title = element_text(size = 17, face = 'bold'), 
-        axis.title.y = element_text(hjust =  -4.6 , size = 17, vjust = 0.05), plot.margin = unit(c(-0.07,0,0,0),'cm'),
-        plot.title = element_text(hjust = 0.5)))#the y label is adjusted so that when we plot
+        axis.text = element_text(size = 17, color = 'black'), 
+        title = element_text(size = 18, face = 'bold'), 
+        axis.title.y = element_text(hjust = -0.6 , size = 18, vjust = -2), 
+        plot.margin = unit(c(-.51,0,0,0),'cm'),
+        plot.title = element_text(hjust = 0.5),
+        panel.border = element_rect(colour = "black", fill=NA, size=1)))
 #we get it approxiamtely in the middle with patchwork
 
 
 # upstream272829 -- fig2 --------------------------------------------------
 #time objects to specify shading areas
-downa5<-as.POSIXct("2016-04-27 20:30:00 EDT")
-downa5_1<-as.POSIXct("2016-04-28 20:30:00 EDT")
-upa5<-as.POSIXct("2016-04-28 05:56:00 EDT")
-upa5_1<-as.POSIXct("2016-04-29 05:56:00 EDT")
+downa5<-as.POSIXct("2016-04-27 20:30:00 US/Pacific")
+downa5_1<-as.POSIXct("2016-04-28 20:30:00 US/Pacific")
+upa5<-as.POSIXct("2016-04-28 05:56:00 US/Pacific")
+upa5_1<-as.POSIXct("2016-04-29 05:56:00 US/Pacific")
 
 #set x axes label to specify location of alphabet labels
-lab_x<-as.POSIXct("2016-04-29 12:00:00 EDT")
+lab_x<-as.POSIXct("2016-04-29 12:00:00 US/Pacific")
 
 (fifth1<-fifth %>% 
   
@@ -265,10 +273,10 @@ lab_x<-as.POSIXct("2016-04-29 12:00:00 EDT")
             size = 1.5, alpha = 0.65)+ 
 
   
-  #controlling the scale for x and y axes so dates can plot normally and have 2 y axes
+  # controlling the scale for x and y axes so dates can plot normally and have 2 y axes
   scale_color_manual(name = "",
-                     values = c("Smolt Density" = '#E69F00', 
-                                "Bull trout reactions" = '#0072B2'))+
+                     values = c("Smolt Density" = 'orange', 
+                                "Bull trout reactions" = 'blue'))+
   scale_y_continuous(name = '', 
                      sec.axis = sec_axis(~.*50000, name = ""))+
   scale_linetype_manual(name = "",values = c("Smolt Density" = "solid", 
@@ -282,59 +290,68 @@ lab_x<-as.POSIXct("2016-04-29 12:00:00 EDT")
   annotate("text", x = lab_x, 
            y = Inf, label  = 'E', vjust = 1.5, size = 8, fontface = 'bold',hjust = 0.9)+
   labs(title = 'UF272829', x = 'Date & time')+
-  
+
   #for fine-scale tinkering of the theme
-  theme_classic()+
+  theme_bw()+
   theme(legend.position = 'bottom',legend.text = element_text(size = 15.3),
         legend.key.width = unit(0.9, 'cm'),
         axis.text.x = element_text(angle = 90, vjust = 0.5),  
-        axis.text = element_text(size = 14, color = 'black'),
-        title = element_text(size = 17, face = 'bold'),
-        axis.title.x = element_text(vjust = -1, size = 17, face = 'plain'), plot.margin = unit(c(-0.07,0,0,0),'cm'),
-        plot.title = element_text(hjust = 0.5)))
+        axis.text = element_text(size = 17, color = 'black'),
+        title = element_text(size = 18, face = 'bold'),
+        axis.title.x = element_text(vjust = -1, size = 18, face = 'plain'), 
+        plot.margin = unit(c(-.51,0,0,0),'cm'),
+        plot.title = element_text(hjust = 0.5),
+        panel.border = element_rect(colour = "black", fill=NA, size=1)))
 
 
 # narrows 29 -- fig 2 ------------------------------------------------------
 #no time objects for shading for narrows 29 because we don't have night time observations
 
 #set x axes label to specify location of alphabet labels
-lab_x<-as.POSIXct("2016-04-29 18:50:00 EDT")
+lab_x<-as.POSIXct("2016-04-29 19:20:00 US/Pacific")
+
 
 (sixth1<-sixth %>% 
     
 #our main plotting functions
   ggplot()+
-  geom_line(aes(x = Date , y = Reactionpermsq, 
+  geom_line(aes(x = as.POSIXct(fixdate, tz = "US/Pacific") , y = Reactionpermsq, 
                 linetype = "Total reactions per meter", color = 'Total reactions per meter'),
             size = 1.5, alpha = 0.65)+
     #for controlling scale so x y are appropriate scales
   scale_y_continuous(name ="",
-                     sec.axis = sec_axis(~., name = "Smolt Density"))+
+                     sec.axis = sec_axis(~., name = "Smolt Density (per hour)"))+
   scale_linetype_manual(name = bquote('Total reactions/'~m^2~''),
                         values = c("Smolt Density" = 1, 
                                    "Total reactions per meter" = 2))+
   scale_color_manual(name = "",
-                     values = c("Smolt Density" = '#E69F00', 
-                                "Total reactions per meter" = '#0072B2'))+
+                     values = c("Smolt Density" = 'orange', 
+                                "Total reactions per meter" = 'blue'))+
     #for annotations - labels, axes, etc
     labs(title = 'N29', x='')+
-    annotate("text", x = lab_x, 
-             y = Inf, label  = 'F', vjust = 1.5, size = 8, fontface = 'bold',hjust = 0.3)+
-
-    #for fine scale tinkering of theme
-  theme_classic()+
+    scale_x_datetime(labels = date_format("%b %d %H:%M", tz = "US/Pacific"))+   
+    annotate("text", x = as.POSIXct("2016-04-29 18:30"), 
+             y = Inf, label  = 'F', vjust = 1.3, size = 8, fontface = 'bold',hjust = -0.1)+
+ 
+       #for fine scale tinkering of theme
+  theme_bw()+
   theme(legend.position = 'none', 
         axis.text.x = element_text(angle = 90, vjust = 0.5),
-        axis.text = element_text(size = 14, angle = 0, color = 'black'),
+        axis.text = element_text(size = 17, angle = 0, color = 'black'),
         title = element_text(size = 17, face = 'bold'),
-        axis.title.y.right = element_text(size = 17, hjust = -2.3, face = 'plain'),
-        plot.margin = unit(c(-0.07,0,0,0),'cm'),
-        plot.title = element_text(hjust = 0.5)))
+        axis.title.y.right = element_text(size = 18, hjust = -12.5, face = 'plain', vjust = -5),
+        plot.margin = unit(c(-.51,0,0,0),'cm'),
+        plot.title = element_text(hjust = 0.5),
+        panel.border = element_rect(colour = "black", fill=NA, size=1),
+        axis.text.y.right = element_blank(),
+        axis.ticks.y.right = element_blank()))
 
 # putting this all together (FIGURE 2) ------------------------------------
 
-plot_grid(first1, second1, third1, fourth1, fifth1, sixth1,  align = "hv", axis = 'b')
-
+pdf(file = file.path(dir.fig, "MS figures", "fig3_rxns.pdf"), width = 18.5, height = 10)
+plot_grid(first1, second1, third1, fourth1, fifth1, sixth1,  align = "hv", axis = 'b', scale = 1.04)
+dev.off()
+ 
 
 
 

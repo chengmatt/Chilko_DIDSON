@@ -51,10 +51,9 @@ site1 <- factor(pseudo$Sites,
 # first part of the plot (size distributions across sites)
 (a<-ggplot(data=pseudo,aes(x = Sites, y= Size*100))+
    # basic plotting functions
-  geom_jitter(alpha =0.3, width = 0.1)+
-  geom_boxplot(width = 0.15, 
-               position = position_nudge(x = -0.3), 
-               outlier.alpha = 0, size = 1)+
+   geom_jitter(alpha = 0.2, width = 0.15)+
+   geom_boxplot(width = 0.27, position = position_nudge(x = -0.33),
+                outlier.alpha = 0, size = 1, alpha = 0.8)+
  
    # adding horizontal lines to denote min and max of size distribution 
   geom_hline(yintercept = 41, color = 'black', 
@@ -64,6 +63,7 @@ site1 <- factor(pseudo$Sites,
    # flip x and y axes and labeling
    coord_flip()+
   labs(x = "", y = "")+
+   ylim(20, 90)+
    
    # fine scale tinkering w/ the theme
    theme_classic()+
@@ -81,12 +81,18 @@ site1 <- factor(pseudo$Sites,
     legend.position = "none", 
     axis.text = element_text(color = 'black', size = 17)))
 
+# Renaming observations
+fieldod[fieldod$type == "DIDSON", 1] <- "Unfiltered DIDSON measurements"
+fieldod[fieldod$type == "Sub", 1] <- "Filtered DIDSON measurements"
+fieldod[fieldod$type == "TL", 1] <- "Field measurements"
+
+
 # plot for didson measurements (pseudo replciated and subset)
 (b<-ggplot(fieldod, aes(type, size))+
   # main plotting functions
-  geom_jitter(alpha =0.3, width = 0.1)+
-  geom_boxplot(width = 0.27, position = position_nudge(x = -0.33),
-               outlier.alpha = 0, size = 1)+
+  geom_jitter(alpha = 0.2, width = 0.12)+
+  geom_boxplot(width = 0.27, position = position_nudge(x = -0.38),
+               outlier.alpha = 0, size = 1, alpha = 0.8)+
     
   # adding horizontal lines to denote min and max
   geom_hline(yintercept = 41.1, color = 'black', 
@@ -97,6 +103,7 @@ site1 <- factor(pseudo$Sites,
     #flipping axes and labeling axes
     coord_flip()+
   labs(y = "", x = "")+
+    ylim(20, 90)+
     
     # fine scale tinkering w/ the theme
     theme_minimal()+
@@ -124,6 +131,8 @@ site1 <- factor(pseudo$Sites,
 plot3<-plot_grid(a, b, align = "v", 
                  nrow = 2, rel_heights = c(8, 2.5))
 
-annotate_figure(plot3,bottom = text_grob("Size(cm)", 
-                                         x = 0.63, y = 0.8, size = 15, face = 'plain'))
+pdf(file = file.path(dir.fig, "MS figures", "Fig3.pdf"), width = 13, height = 8)
+annotate_figure(plot3,bottom = text_grob("Total length (cm)", 
+                                         x = 0.54, y = 0.8, size = 18, face = 'plain'))
+dev.off()
 

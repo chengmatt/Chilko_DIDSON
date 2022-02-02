@@ -50,6 +50,9 @@ sum_df$date<-force_tz(ymd_hm(sum_df$date),"America/New_York") #forcing to EDT ti
 #only testing for these two because prelim analyses showed all other sites would
 #not require testing (i.e., would be insiginficant)
 
+# Wilcox overall
+wilcox.test(standrxn ~ cycle, data = sum_df)
+
 #filtering to these datasets just to isolate them
 diel_2021<-sum_df %>% 
   filter(site == 'firstnight2021')
