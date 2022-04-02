@@ -71,52 +71,22 @@ wilcox.test(standrxn~cycle, data = diel_272829)
 kruskal.test(sum_df$standrxn~sum_df$site)#to see if standardized reactions differ across sites
 
 
-# Pearson correlations ----------------------------------------------------
-#firstnight2021 correaltion
-data_pearson<-sum_df %>% 
-  drop_na() %>% 
-  filter(site == 'firstnight2021')
-
-#firstnight2021
-cor.test(data_pearson$smoltdens, data_pearson$standrxn, 
-         method = 'pearson') 
-
-#downstreamriver2122 correaltion
-data_pearson<-sum_df %>% 
-  drop_na() %>% 
-  filter(site == 'downstreamriver2122')
-
-#downstreamriver2122
-cor.test(data_pearson$smoltdens, data_pearson$standrxn, method = 'pearson') 
-
-#downstreamfence2324 correaltion
-data_pearson<-sum_df %>% 
-  drop_na() %>% 
-  filter(site == 'downstreamfence2324')
-
-#downstreamfence2324
-cor.test(data_pearson$smoltdens, data_pearson$standrxn, method = 'pearson') 
-
-#narrows2526 correaltion
-data_pearson<-sum_df %>% 
-  drop_na() %>% 
-  filter(site == 'narrows2526')
-
-#narrows2526
-cor.test(data_pearson$smoltdens, data_pearson$standrxn, 
-         method = 'pearson') 
-
-#upstream272829 correaltion
-data_pearson<-sum_df %>% 
-  drop_na() %>% 
-  filter(site == 'upstream272829')
-
-#narrows2526
-cor.test(data_pearson$smoltdens, data_pearson$standrxn, 
-         method = 'pearson') 
-
-
 # correlations via pooling the data into hourly observations  --------------------------
+all_corr <- sum_df %>% 
+  replace_na(list(smoltdens=0))
+
+#sum first two rows
+all_corr <-rowsum(all_corr[,4:5], 
+                      as.integer(gl(nrow(all_corr), 2, 
+                                    nrow(all_corr)))) 
+
+# Filter out zeros
+all_corr <- all_corr %>% 
+  filter(smoltdens != 0 )
+
+cor.test(all_corr$standrxn, all_corr$smoltdens, 
+         method = 'spearman', exact = FALSE)
+
 
 #stratify this by the upstream sites
 #upstream 2021
@@ -135,7 +105,9 @@ pooled_nonzeros_UF2021<-pooled_UF2021 %>%
 
 #test for perasons UF2021
 cor.test(pooled_nonzeros_UF2021$standrxn, pooled_nonzeros_UF2021$smoltdens, 
-         method = 'pearson')
+         method = 'spearman')
+
+
 
 #upstream 272829
 pooled_UF272829<-sum_df %>% 
@@ -153,7 +125,8 @@ pooled_nonzeros_UF272829<-pooled_UF272829 %>%
 
 #test for perasons UF272829
 cor.test(pooled_nonzeros_UF272829$standrxn, pooled_nonzeros_UF272829$smoltdens, 
-         method = 'pearson')
+         method = 'spearman')
+
 
 
 # Wilcoxon to test rank mean length diffs ---------------------------------

@@ -69,12 +69,13 @@ lab_x<-as.POSIXct("2016-04-21 12:00:00 US/Pacific")
 (first1<-first %>% 
   #main plotting control
     ggplot()+
+    geom_line(data=first[!is.na(first$smoltdensity/140000),],
+              aes(x=Date, y=smoltdensity/140000, 
+                  linetype="Smolt Density", color = 'Smolt Density'),
+              size = 1.5, alpha = 0.65)+   #remove MISSING VALUES! for smolt density
   geom_line(aes(x = Date , y = Reactionpermsq, 
                 linetype = "Total reactions per meter", color = 'Total reactions per meter'),
             size = 1.5, alpha = 0.65)+
-  geom_line(data=first[!is.na(first$smoltdensity/140000),],
-            aes(x=Date, y=smoltdensity/140000, linetype="Smolt Density", color = 'Smolt Density'),
-            size = 1.5, alpha = 0.65)+   #remove MISSING VALUES! for smolt density
   
     #controlling x and y scale axes so we can have 2 y axes 
     scale_color_manual(name = "",
@@ -91,7 +92,7 @@ lab_x<-as.POSIXct("2016-04-21 12:00:00 US/Pacific")
              y = Inf, label  = 'A', vjust = 1.5, size = 8, fontface = 'bold',hjust = 1)+
   annotate("rect", xmin = down1, xmax = up1, 
            ymin= -Inf,  ymax = Inf, alpha = 0.3)+
-  labs(title = 'UF2122', x = '',y="")+
+  labs(title = 'UF2021', x = '',y="")+
    
      #fine-scale tinkering of theme
     theme_bw()+
@@ -118,14 +119,12 @@ lab_x<-as.POSIXct("2016-04-22 12:00:00 US/Pacific")
   
   #main plotting function
   ggplot()+
+    geom_line(data=second[!is.na(second$smoltdensity/500000),]
+              ,aes(x=Date, y=smoltdensity/500000, linetype="Smolt Density", color = 'Smolt Density'),
+              size = 1.5, alpha = 0.655)+   #remove MISSING VALUES! for smolt density
   geom_line(aes(x = Date , y = Reactionpermsq, 
                 linetype = "Total reactions per meter", color = 'Total reactions per meter'),
             size = 1.5, alpha = 0.65)+
-  geom_line(data=second[!is.na(second$smoltdensity/500000),]
-            ,aes(x=Date, y=smoltdensity/500000, linetype="Smolt Density", color = 'Smolt Density'),
-            size = 1.5, alpha = 0.655)+   #remove MISSING VALUES! for smolt density
-
-
   #setting up scale for x and y axes so we can plot 2 y axes and dates as x axes
     scale_color_manual(name = "",
                      values = c("Smolt Density" = 'orange', 
@@ -165,14 +164,12 @@ lab_x<-as.POSIXct("2016-04-24 10:15:00 US/Pacific")
   
       #main plotting functions
   ggplot()+
+    geom_line(data=third[!is.na(third$smoltdensity/140000),],
+              aes(x=Date, y=smoltdensity/140000, linetype="Smolt Density", color = 'Smolt Density'),
+              size = 1.5, alpha = 0.65)+   #remove MISSING VALUES! for smolt density
   geom_line(aes(x = Date , y = Reactionpermsq, 
                 linetype = "Total reactions per meter", color = 'Total reactions per meter'),
             size = 1.5, alpha = 0.65)+
-  geom_line(data=third[!is.na(third$smoltdensity/140000),],
-            aes(x=Date, y=smoltdensity/140000, linetype="Smolt Density", color = 'Smolt Density'),
-            size = 1.5, alpha = 0.65)+   #remove MISSING VALUES! for smolt density
-
-    
     #for allowing plots to have appropriate x and y scales w/ 2 y axes left and right
   scale_color_manual(name = "",
                      values = c("Smolt Density" = 'orange', 
@@ -214,24 +211,28 @@ lab_x<-as.POSIXct("2016-04-26 15:00:00 US/Pacific")
    
      #main plotting functions
   ggplot()+
-  geom_line(aes(x = Date , y = Reactionpermsq, linetype = "Total reactions per meter", color = 'Total reactions per meter'),
-            size = 1.5, alpha = 0.65)+
-  geom_line(data=fourth[!is.na(fourth$smoltdensity/10000),]
-            ,aes(x=Date, y=smoltdensity/10000, linetype="Smolt Density", color = 'Smolt Density'),
-            size = 1.5, alpha = 0.65)+   #remove MISSING VALUES! for smolt density
-
- 
+    
+  geom_line(data=fourth[!is.na(fourth$smoltdensity/1400000),]
+            ,aes(x=Date, y=smoltdensity/1400000, linetype="Smolt Density", color = 'Smolt Density'),
+            size = 1.5, alpha = 1)+   #remove MISSING VALUES! for smolt density
     #setting up relevant scales for x and y axes - so we can have 2 y axes
+    
+    geom_line(aes(x = Date , y = Reactionpermsq, 
+                  linetype = "Total interactions per meter", color = 'Total interactions per meter'),
+              size = 1.5, alpha = 1)+
+    
      scale_color_manual(name = "",
-                     values = c("Smolt Density" = 'orange', 
-                                "Total reactions per meter" = 'blue'))+
-  scale_y_continuous(name = bquote('Bull trout reactions /'~m^2~'(per 30-minutes)'),
-                     sec.axis = sec_axis(~.*140000, name = " "))+
+                     values = c( "Total interactions per meter" = 'blue',
+                       "Smolt Density" = 'orange'))+
+    
+  scale_y_continuous(name = bquote('Bull trout interactions /'~m^2~'(per 30-minutes)'),
+                     sec.axis = sec_axis(~.*1400000, name = " "))+
+    
   scale_linetype_manual(name = "",values = c("Smolt Density" = 1,
-                                             "Total reactions per meter" = 2))+
+                                             "Total interactions per meter" = 2))+
     
     #for annotations and labels, and shading
-    labs(title = 'N2526', x = '', y = bquote('Total reactions/'~m^2~'(per 30-minutes)'))+
+    labs(title = 'N2526', x = '', y = bquote('Total interactions/'~m^2~'(per 30-minutes)'))+
     annotate("rect", xmin = downd4, xmax = upd4,
              ymin= -Inf,  ymax = Inf, alpha = 0.3)+
     annotate("text", x = lab_x, 
@@ -243,7 +244,7 @@ lab_x<-as.POSIXct("2016-04-26 15:00:00 US/Pacific")
         axis.text.x = element_text(angle = 90, vjust = 0.5),
         axis.text = element_text(size = 17, color = 'black'), 
         title = element_text(size = 18, face = 'bold'), 
-        axis.title.y = element_text(hjust = -0.6 , size = 18, vjust = -2), 
+        axis.title.y = element_text(hjust = -0.4 , size = 18, vjust = -2), 
         plot.margin = unit(c(-.51,0,0,0),'cm'),
         plot.title = element_text(hjust = 0.5),
         panel.border = element_rect(colour = "black", fill=NA, size=1)))
@@ -265,22 +266,20 @@ lab_x<-as.POSIXct("2016-04-29 12:00:00 US/Pacific")
   #our main plotting functions
 
   ggplot()+
+    geom_line(data=fifth[!is.na(fifth$smoltdensity/50000),],
+              aes(x=Date, y=smoltdensity/50000, linetype="Smolt Density", color = 'Smolt Density'),
+              size = 1.5, alpha = 0.65)+ 
   #remove MISSING VALUES! for smolt density
-  geom_line(aes(x = Date , y = Reactionpermsq, linetype = "Bull trout reactions", color = 'Bull trout reactions'),
+  geom_line(aes(x = Date , y = Reactionpermsq, linetype = "Bull trout interactions", color = 'Bull trout interactions'),
             size = 1.5, alpha = 0.65)+
-  geom_line(data=fifth[!is.na(fifth$smoltdensity/50000),],
-            aes(x=Date, y=smoltdensity/50000, linetype="Smolt Density", color = 'Smolt Density'),
-            size = 1.5, alpha = 0.65)+ 
-
-  
   # controlling the scale for x and y axes so dates can plot normally and have 2 y axes
   scale_color_manual(name = "",
                      values = c("Smolt Density" = 'orange', 
-                                "Bull trout reactions" = 'blue'))+
+                                "Bull trout interactions" = 'blue'))+
   scale_y_continuous(name = '', 
                      sec.axis = sec_axis(~.*50000, name = ""))+
   scale_linetype_manual(name = "",values = c("Smolt Density" = "solid", 
-                                             "Bull trout reactions" = "twodash"))+
+                                             "Bull trout interactions" = "twodash"))+
   
   #for specifying annotaitons,labels, and shading
   annotate("rect", xmin = downa5, xmax = upa5, 
@@ -315,6 +314,9 @@ lab_x<-as.POSIXct("2016-04-29 19:20:00 US/Pacific")
     
 #our main plotting functions
   ggplot()+
+    geom_line(data=sixth[!is.na(sixth$smoltdensity/50000),],
+              aes(x=Date, y=smoltdensity/50000, linetype="Smolt Density", color = 'Smolt Density'),
+              size = 1.5, alpha = 0.65)+ 
   geom_line(aes(x = as.POSIXct(fixdate, tz = "US/Pacific") , y = Reactionpermsq, 
                 linetype = "Total reactions per meter", color = 'Total reactions per meter'),
             size = 1.5, alpha = 0.65)+
@@ -330,8 +332,8 @@ lab_x<-as.POSIXct("2016-04-29 19:20:00 US/Pacific")
     #for annotations - labels, axes, etc
     labs(title = 'N29', x='')+
     scale_x_datetime(labels = date_format("%b %d %H:%M", tz = "US/Pacific"))+   
-    annotate("text", x = as.POSIXct("2016-04-29 18:30"), 
-             y = Inf, label  = 'F', vjust = 1.3, size = 8, fontface = 'bold',hjust = -0.1)+
+    annotate("text", x = as.POSIXct("2016-04-29 18:00"), 
+             y = Inf, label  = 'F', vjust = 1.3, size = 8, fontface = 'bold',hjust = 0.7)+
  
        #for fine scale tinkering of theme
   theme_bw()+
@@ -339,7 +341,7 @@ lab_x<-as.POSIXct("2016-04-29 19:20:00 US/Pacific")
         axis.text.x = element_text(angle = 90, vjust = 0.5),
         axis.text = element_text(size = 17, angle = 0, color = 'black'),
         title = element_text(size = 17, face = 'bold'),
-        axis.title.y.right = element_text(size = 18, hjust = -12.5, face = 'plain', vjust = -5),
+        axis.title.y.right = element_text(size = 18, hjust = -15, face = 'plain', vjust = -7),
         plot.margin = unit(c(-.51,0,0,0),'cm'),
         plot.title = element_text(hjust = 0.5),
         panel.border = element_rect(colour = "black", fill=NA, size=1),
@@ -349,7 +351,7 @@ lab_x<-as.POSIXct("2016-04-29 19:20:00 US/Pacific")
 # putting this all together (FIGURE 2) ------------------------------------
 
 pdf(file = file.path(dir.fig, "MS figures", "fig3_rxns.pdf"), width = 18.5, height = 10)
-plot_grid(first1, second1, third1, fourth1, fifth1, sixth1,  align = "hv", axis = 'b', scale = 1.04)
+plot_grid(first1, second1, third1, fourth1, fifth1, sixth1,  align = "hv", axis = 'b', scale = 1.033)
 dev.off()
  
 

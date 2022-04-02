@@ -28,22 +28,30 @@ pseudo <- read_csv(file.path(dir.data, "Long_wide_pseudo.csv"))
 # Set up data frames -------------------------------------------------------------
 
 # make site names levels and order
-levels(pseudo$Sites)<-c("Downstream Fence (04-23 - 04-24)", 
-                        "Downstream River (04-21 - 04-22)", 
-                        "Narrows (04-25 - 04-26)", 
-                        "Narrows (04-29)", 
-                        "Upstream (04-20 - 04-21)", 
-                        'Upstream Fence (04-27 - 04-29)')
+levels(pseudo$Sites)<-c("DF2324", 
+                        "DR2122", 
+                        "N2526", 
+                        "N29", 
+                        "UF2021", 
+                        'UF272829')
 
 # order site names by upstream, downstream, narrows
 site1 <- factor(pseudo$Sites,
-                levels = c('Upstream Fence (04-27 - 04-29)', 
-                           "Upstream (04-20 - 04-21)",
-                           "Downstream River (04-21 - 04-22)",
-                           "Downstream Fence (04-23 - 04-24)",
-                           "Narrows (04-25 - 04-26)",
-                           "Narrows (04-29)"),
+                levels = c("DF2324", 
+                           "DR2122", 
+                           "N2526", 
+                           "N29", 
+                           "UF2021", 
+                           'UF272829'),
                 ordered = TRUE)
+
+# Rename site names
+pseudo$Sites[pseudo$Sites == "UpstreamFence272829"] <- "UF272829"
+pseudo$Sites[pseudo$Sites == "UpstreamFence2021"] <- "UF2021"
+pseudo$Sites[pseudo$Sites == "NarrowsOppositeCamp29"] <- "N29"
+pseudo$Sites[pseudo$Sites == "NarrowsHalfCamp2526"] <- "N2526"
+pseudo$Sites[pseudo$Sites == "DownStreamRiver2122"] <- "DR2122"
+pseudo$Sites[pseudo$Sites == "DownstreamFence2324"] <- "DF2324"
 
 
 # Plot figure 3 -----------------------------------------------------------
