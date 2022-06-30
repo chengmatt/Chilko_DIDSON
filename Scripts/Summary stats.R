@@ -108,3 +108,56 @@ length_df %>%  #DIDSON = full dataset, TL = field collected lenghts,
             min = min(size),
             max = max(size),
             count = n())
+
+
+# Checking bias between UF2021 and UF272829 ----------------------------------------------------------
+
+UF2021 <- df[df$site == "firstnight2021", ]
+UF272829 <- df[df$site == "upstream272829", ]
+
+# Check for mean and check for the proportion of zeros observed
+sum(UF2021$Reactionpermsq == 0)/nrow(UF2021) # 10
+sum(UF272829$Reactionpermsq == 0)/nrow(UF272829) # 7
+
+mean(UF2021$Reactionpermsq) # 0.44
+mean(UF272829$Reactionpermsq) # 1.3
+
+
+
+# Reconclide video and didson timestap - uncertainty ----------------------
+
+df <- readxl::read_xlsx(path = here("Data", "Didson_data_complete.xlsx"), sheet = 2) %>% 
+  select(Filename, `Length 1`, `Length 2`, `Length 3`, `Length4`, `Length 5`,
+         `Length 6`, `Length 7`, `Length 8`) %>% 
+  pivot_longer(cols = c(`Length 1`, `Length 2`, `Length 3`, `Length4`, `Length 5`,
+                        `Length 6`, `Length 7`, `Length 8`), names_to = "len_num",
+               values_to = "length") %>% 
+  drop_na()
+
+# Remove ms and coerce to numeric
+df$length <- as.numeric(strsplit(df$length, "m", fixed = TRUE))
+
+df <- df[!is.na(df$length),]
+
+# n
+df %>% count()
+# mean
+mean(df$length) * 100
+# sd
+sd(df$length) * 100
+
+fun.ecdf <-ecdf(df$length)
+
+# ECDF value 
+fun.ecdf(0.415)
+
+pdf(file = file.path(dir.fig, "MS figures", "supp_1.pdf"), width = 7.5, height = 5)
+ggplot(df, aes(x = length * 100)) +
+  stat_ecdf(geom = "smooth", pad = FALSE) +
+  theme_bw() +
+  labs(x = "Length (cm)", y = "Cumlative Probability") +
+  geom_segment(aes(x = 79.5 , y = 0 ,xend = 79.5, yend = 0.993), lty = 2) +
+  geom_segment(aes(x = 41 , y = 0 ,xend = 41, yend = 0.199), lty = 2)
+
+
+dev.off()
