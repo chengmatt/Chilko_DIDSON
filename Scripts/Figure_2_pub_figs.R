@@ -219,7 +219,7 @@ lab_x<-as.POSIXct("2016-04-22 12:00:00 US/Pacific")
     scale_color_manual(name = "",
                      values = c("Smolt Density" = 'orange', 
                                 "Total reactions per meter" = 'blue'))+
-  scale_y_continuous(name =  bquote('Bull trout interactions /'~m^2~'(per hour)'), 
+  scale_y_continuous(name =  bquote('Bull Trout interactions /'~m^2~'(per hour)'), 
                      sec.axis = sec_axis(~.*500000, name = ""))+
   scale_linetype_manual(name = "",
                         values = c("Smolt Density" = 1, 
@@ -238,7 +238,7 @@ lab_x<-as.POSIXct("2016-04-22 12:00:00 US/Pacific")
           axis.text.x = element_text(angle = 90, vjust = 0.5),
           axis.text = element_text(size = 17, color = 'black'), 
           title = element_text(size = 18, face = 'bold'), 
-          axis.title.y = element_text(hjust = -2.5  , size = 18, vjust = -3.9), 
+          axis.title.y = element_text(hjust = -1  , size = 18, vjust = -3.9), 
           plot.margin = unit(c(0.25,0,-0.33,0),'cm'),
           plot.title = element_text(hjust = 0.5),
           panel.border = element_rect(colour = "black", fill=NA, size=1)))
@@ -318,7 +318,7 @@ lab_x<-as.POSIXct("2016-04-26 15:00:00 US/Pacific")
     #setting up relevant scales for x and y axes - so we can have 2 y axes
     
     geom_line(aes(x = Date , y = Reactionpermsq, 
-                  linetype = "Total interactions per meter", color = 'Total interactions per meter'),
+                  linetype = "Bull Trout interactions", color = 'Bull Trout interactions'),
               size = 1.5, alpha = 0.65)+
     geom_point(data=fourth[!is.na(fourth$smoltdensity/1400000),]
               ,aes(x=Date, y=smoltdensity/1400000, linetype="Smolt Density", color = 'Smolt Density'),
@@ -326,18 +326,17 @@ lab_x<-as.POSIXct("2016-04-26 15:00:00 US/Pacific")
     #setting up relevant scales for x and y axes - so we can have 2 y axes
     
     geom_point(aes(x = Date , y = Reactionpermsq, 
-                  linetype = "Total interactions per meter", color = 'Total interactions per meter'),
+                  linetype = "Bull Trout interactions", color = 'Bull Trout interactions'),
               size = 4, alpha = 0.55)+
     
-     scale_color_manual(name = "",
-                     values = c( "Total interactions per meter" = 'blue',
-                       "Smolt Density" = 'orange'))+
-    
-  scale_y_continuous(name = "",
-                     sec.axis = sec_axis(~.*1400000, name = " "))+
-    
-  scale_linetype_manual(name = "",values = c("Smolt Density" = 1,
-                                             "Total interactions per meter" = 2))+
+    # controlling the scale for x and y axes so dates can plot normally and have 2 y axes
+    scale_color_manual(name = "",
+                       values = c("Smolt Density" = 'orange', 
+                                  "Bull Trout interactions" = 'blue'))+
+    scale_y_continuous(name = '', 
+                       sec.axis = sec_axis(~.*300000, name = ""))+
+    scale_linetype_manual(name = "",values = c("Smolt Density" = "solid", 
+                                               "Bull Trout interactions" = "twodash"))+
     
     #for annotations and labels, and shading
     labs(title = 'N2526', x = '', y = "")+
@@ -349,8 +348,9 @@ lab_x<-as.POSIXct("2016-04-26 15:00:00 US/Pacific")
   #for fine scale tinkering of the themes
     #for fine-scale tinkering of the theme
     theme_bw()+
-    theme(legend.position = 'none',legend.text = element_text(size = 15.3),
-          legend.key.width = unit(0.9, 'cm'),
+    theme(legend.position = 'bottom',legend.text = element_text(size = 15.3),
+          legend.key.width = unit(1.75, 'cm'),
+          legend.margin=margin(c(0,0,15,0)),
           axis.text.x = element_text(angle = 90, vjust = 0.5),  
           axis.text = element_text(size = 17, color = 'black'),
           title = element_text(size = 18, face = 'bold'),
@@ -464,7 +464,7 @@ lab_x<-as.POSIXct("2016-04-29 19:20:00 US/Pacific")
         axis.text.x = element_text(angle = 90, vjust = 0.5),
         axis.text = element_text(size = 17, angle = 0, color = 'black'),
         title = element_text(size = 17, face = 'bold'),
-        axis.title.y.right = element_text(size = 18, hjust = -3.3, face = 'plain', vjust = -7),
+        axis.title.y.right = element_text(size = 18, hjust = 10.5, face = 'plain', vjust = -7),
         plot.margin = unit(c(0.25,0,-0.33,0),'cm'),
         plot.title = element_text(hjust = 0.5),
         panel.border = element_rect(colour = "black", fill=NA, size=1),

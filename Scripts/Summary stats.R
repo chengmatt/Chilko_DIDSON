@@ -45,10 +45,15 @@ sum_df$date<-force_tz(ymd_hm(sum_df$date),"America/New_York") #forcing to EDT ti
 
 #cumulative mean max and sd reactions
 sum_df %>% 
-  summarize(mean = mean(standrxn),
-            sd = sd(standrxn),
-            min = min(standrxn),
-            max = max(standrxn))
+  mutate(site_agg = ifelse(site %in% c("upstream272829","firstnight2021"),
+                           "UF", ifelse(site %in% c("downstreamfence2324",
+                                                    "downstreamriver2122"),
+                                        "DR", "N"))) %>% 
+  group_by(site_agg) %>% 
+  summarize(mean = mean(standrxn, na.rm = T),
+            sd = sd(standrxn, na.rm = T),
+            min = min(standrxn, na.rm = T),
+            max = max(standrxn, na.rm = T))
 
 #mean and sd of reactions across sites standardized by the area
 sum_df %>% 
@@ -143,6 +148,7 @@ df <- df[!is.na(df$length),]
 df %>% count()
 # mean
 mean(df$length) * 100
+max(df$length) * 100
 # sd
 sd(df$length) * 100
 

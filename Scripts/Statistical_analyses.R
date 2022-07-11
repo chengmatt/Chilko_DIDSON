@@ -48,7 +48,8 @@ sum_df$date<-force_tz(ymd_hm(sum_df$date),"America/New_York") #forcing to EDT ti
 
 #wilcox rank sum at upstream 2021 and upstream 272829 
 #only testing for these two because prelim analyses showed all other sites would
-#not require testing (i.e., would be insiginficant)
+#not require testing (i.e., would be insiginficant
+
 
 # Wilcox overall
 wilcox.test(standrxn ~ cycle, data = sum_df)
@@ -79,14 +80,21 @@ wilcox.test(standrxn~cycle, data = diel_2021) # sig
 wilcox.test(standrxn~cycle, data = diel_272829) # sig
 
 # Other sites
-# wilcox.test(standrxn~cycle, data = dr2122) # sig
-# wilcox.test(standrxn~cycle, data = df2324) # sig
+wilcox.test(standrxn~cycle, data = df2324) # sig
 
+# Other sites
+wilcox.test(standrxn~cycle, data = dr2122) # sig
 
+dr2122 %>% 
+  group_by(cycle) %>% 
+  summarize(mean = mean(standrxn, na.rm = T),
+            sd = sd(standrxn, na.rm = T))
 
 # Kruskal Wallis  ---------------------------------------------------------
 kruskal.test(sum_df$standrxn~sum_df$site)#to see if standardized reactions differ across sites
 
+# Pairwise wilcox test
+pairwise.wilcox.test(sum_df$standrxn,sum_df$site, p.adjust.method = "holm")
 
 # correlations via pooling the data into hourly observations  --------------------------
 all_corr <- sum_df %>% 
