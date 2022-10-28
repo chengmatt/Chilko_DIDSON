@@ -40,19 +40,17 @@ pdf(file = file.path(dir.fig, "MS figures", "fig2.pdf"), width = 5, height = 5)
 ggplot(df %>% 
          mutate(UF_sites = 
                   factor(UF_sites, levels = c("UF", "Other"))),  # Re-leveling factors
-       aes(x = UF_sites, y = standrxn))+
+       aes(x = cycle, y = standrxn))+
   geom_boxplot(width = 0.5, size = 0.8, alpha = 0.6, outlier.shape = NA)+
-  geom_jitter(alpha = 0.45, width = 0.17, size = 2)+
-  # annotate("text", x = 0.6, 
-  #          y = Inf, label  = 'W = 2693.5', vjust = 1.5, size = 5, fontface = 'plain',hjust = 0.3)+
-  # annotate("text", x = 0.6, 
-  #          y = 5.4, label  = 'P < 0.01', vjust = 1.5, size = 5, fontface = 'italic',hjust = 0.3)+
+  geom_jitter(alpha = 0.75, width = 0.2, size = 2, aes(color = UF_sites, shape = UF_sites))+
+  annotate("text", x = 0.6,
+           y = Inf, label  = 'W = 2693.5', vjust = 1.5, size = 5, fontface = 'plain',hjust = 0.3)+
+  annotate("text", x = 0.6,
+           y = 5.4, label  = 'P < 0.01', vjust = 1.5, size = 5, fontface = 'italic',hjust = 0.3)+
   labs(x = "Cycle", y = bquote('Total interactions/'~m^2~'(per 30-minutes)'),
-       color = "Cycle")+
+       color = "Sites", shape = "Sites")+
   theme_bw()+ 
-  # scale_fill_manual(values = c("orange", "black"))+
-  # scale_color_manual(values = c("orange", "black"))+
-  facet_wrap(~cycle)+
+  scale_color_jco() +
   theme(axis.title = element_text(size = 17), 
         axis.text = element_text(size = 15, color = "black"),
         legend.position = "top",
